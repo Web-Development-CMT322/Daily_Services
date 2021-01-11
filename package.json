@@ -1,0 +1,42 @@
+{
+  "name": "Daily_Services",
+  "version": "1.0.0",
+  "description": "a really cool app",
+  "main": "server.js",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "ejs": "^3.1.5",
+    "eslint": "^7.16.0",
+    "express": "^4.17.1",
+    "express-ejs-layouts": "^2.5.0",
+    "express-flash": "0.0.2",
+    "express-session": "^1.17.1",
+    "method-override": "^3.0.0",
+    "mkdirp": "^1.0.4",
+    "mongoose": "^5.11.11",
+    "nodemon": "^2.0.7",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
+  },
+  "engines": {
+    "node": "14.15.0"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "dotenv": "^8.2.0"
+  },
+  "scripts": {
+    "start": "node server.js",
+    "devStart": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Web-Development-CMT322/Daily_Services_Web_Application.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Web-Development-CMT322/Daily_Services_Web_Application/issues"
+  },
+  "homepage": "https://github.com/Web-Development-CMT322/Daily_Services_Web_Application#readme"
+}
