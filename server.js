@@ -15,6 +15,8 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 
+const mongoose = require('mongoose')
+
 var router = express.Router();
 
 const initializePassport = require('./passport-config')
@@ -23,6 +25,23 @@ initializePassport(
   email => users.find(user => user.email === email),
   id => users.find(user => user.id === id)
 )
+
+//Start MongoDB
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+mongoose.Promise = global.Promise;
+
+mongoose.connect("mongodb+srv://group-20-web:Try12345@cluster20.sx3at.mongodb.net/userData?retryWrites=true&w=majority", { useUnifiedTopology: true, useNewUrlParser: true })
+
+const dataUser = new mongoose.Schema({
+  userName: String,
+  userEmail: String,
+  userPassword: String
+});
+
+const User = mongoose.model("UserData", dataUser);
+
+////////////////////////////////////////////////////////////////////////////////////////////////
 
 const users = []
 
@@ -63,8 +82,18 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
 })
 
 app.post('/register', checkNotAuthenticated, async (req, res) => {
+
+  const hashedPassword = await bcrypt.hash(req.body.password, 10)
+
+  const user = new User({
+
+    userName: req.body.name,
+    userEmail: req.body.email,
+    userPassword: hashedPassword
+  });
+
+  user.save();
   try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10)
     users.push({
       id: Date.now().toString(),
       name: req.body.name,
@@ -76,6 +105,7 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
     res.redirect('/register')
   }
   console.log(users)
+
 })
 
 function checkAuthenticated(req, res, next) {
