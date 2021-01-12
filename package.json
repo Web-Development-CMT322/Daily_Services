@@ -1,5 +1,5 @@
 {
-  "name": "Daily_Services",
+  "name": "daily_services",
   "version": "1.0.0",
   "description": "a really cool app",
   "main": "server.js",
@@ -36,12 +36,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Web-Development-CMT322/Daily_Services_Web_Application.git"
+    "url": "git+https://github.com/Web-Development-CMT322/Daily_Services.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Web-Development-CMT322/Daily_Services_Web_Application/issues"
+    "url": "https://github.com/Web-Development-CMT322/Daily_Services/issues"
   },
-  "homepage": "https://github.com/Web-Development-CMT322/Daily_Services_Web_Application#readme"
+  "homepage": "https://github.com/Web-Development-CMT322/Daily_Services#readme"
 }

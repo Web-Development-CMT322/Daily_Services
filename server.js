@@ -1,7 +1,7 @@
 //jshint esversion:6
 require('dotenv').config()
 
-var pass = "";
+var pass = " ";
 const bodyParser = require("body-parser");;
 const express = require("express");
 const https = require("https");
@@ -9,8 +9,6 @@ const ejs = require("ejs")
 const app = express();
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
-//const md5 = require("md5");
-//const encrypt = require("mongoose-encryption")
 
 const passport = require('passport')
 const flash = require('express-flash')
@@ -20,13 +18,6 @@ const methodOverride = require('method-override')
 const mongoose = require('mongoose')
 
 var router = express.Router();
-
-const initializePassport = require('./passport-config')
-initializePassport(
-  passport,
-  email => users.find(user => user.email === email),
-  id => users.find(user => user.id === id)
-)
 
 //Start MongoDB
 app.use(bodyParser.json());
@@ -42,14 +33,9 @@ const dataUser = new mongoose.Schema({
   userPassword: String
 });
 
-// const secret = "Thisisthesecretofpassword.";
-// dataUser.plugin(encrypt, {secret: secret, encryptedFields: ["userPassword"]});
-
 const User = mongoose.model("UserData", dataUser);
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
-
-//const users = []
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: false}))
@@ -65,15 +51,15 @@ app.use(methodOverride('_method'))
 
 app.use(express.static("public"));
 
-app.get("/Service_Provider_Profile", function(req, res){
-  res.render('Service_Provider_Profile.ejs')
+app.get("/UserProfile", function(req, res){
+  res.render('UserProfile.ejs')
 });
 
 app.get("/", function(req, res){
   res.render('index.ejs');
 });
 
-app.get('/login', checkNotAuthenticated, (req, res) => {
+app.get('/login', (req, res) => {
   res.render('login.ejs', {messages: pass})
 })
 
@@ -91,7 +77,7 @@ app.post('/login', function(req, res) {
         bcrypt.compare(userpassword, foundUser.userPassword, function(err, result) {
           // result == true
           if(result === true ){
-            res.render("Service_Provider_Profile");
+            res.render("UserProfile");
           }else{
             pass = "Please enter again password";
             res.redirect("login");
@@ -104,20 +90,17 @@ app.post('/login', function(req, res) {
       }
     }
   });
-  // successRedirect: '/Service_Provider_Profile',
-  // failureRedirect: '/login',
-  // failureFlash: true
 });
 
-app.get('/register', checkNotAuthenticated, (req, res) => {
+app.get('/register', (req, res) => {
   res.render('register.ejs')
 })
 
-app.post('/register', checkNotAuthenticated, async (req, res) => {
+app.post('/register', async (req, res) => {
 
   const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
-    // Store hash in your password DB.
+  // Store hash in your MongoDB
   const user = new User({
 
     userName: req.body.name,
@@ -126,35 +109,9 @@ app.post('/register', checkNotAuthenticated, async (req, res) => {
   });
 
   user.save();
-  try {
-    users.push({
-      id: Date.now().toString(),
-      name: req.body.name,
-      email: req.body.email,
-      password: hashedPassword
-    })
-    res.redirect('/login')
-  } catch {
-    res.redirect('/register')
-  }
-  console.log(users)
+  res.redirect('/login')
 
 })
-
-function checkAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next()
-  }
-
-  res.redirect('/login')
-}
-
-function checkNotAuthenticated(req, res, next) {
-  if (req.isAuthenticated()) {
-    return res.redirect('/')
-  }
-  next()
-}
 
 app.delete('/logout', (req, res) => {
   req.logOut()
@@ -163,9 +120,9 @@ app.delete('/logout', (req, res) => {
 
 // Personal Service Part
 app.get('/personal', (req, res) => {
-  res.render('Personal_Services.ejs')
+  res.render('UserProfile.ejs')
 })
 
 app.listen(process.env.PORT || 8000, function() {
-  console.log("Example app listening on port 8000!")
+  console.log("App listening on port 8000!")
 });
